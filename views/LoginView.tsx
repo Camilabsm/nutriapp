@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { useUserDatabase } from '../utils/UserFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginScreenProps {}
 
@@ -11,17 +13,22 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation<StackNavigationProp<any>>();
 
+  const userDatabase = useUserDatabase()
   const handleLogin = () => {
     if (username && password) {
-      if (username === 'camilap' && password === '@Camila123') {
-        navigation.navigate('Main');
-      } else {
-        Alert.alert('Erro', 'Usuário ou senha incorretos')
+      try {
+        const isAuthenticated = userDatabase.getUser(username, password)
+        if (isAuthenticated) {
+          AsyncStorage.setItem('userToken', '123')
+          navigation.navigate('Main')
+        } else {
+          Alert.alert('Erro', 'Usuário ou senha incorretos')
+        }
+      } catch (error) {
+        Alert.alert('Erro', 'Erro na autenticação')
       }
-    } else {
-      Alert.alert('Erro', 'Por favor, preencha ambos os campos.');
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
