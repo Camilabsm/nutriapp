@@ -1,6 +1,6 @@
 // src/screens/LoginScreen.tsx
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { useUserDatabase } from '../utils/UserFunctions';
@@ -32,20 +32,25 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../assets/images/nutriappfront.png')} style={styles.image} />
+      <Text style={styles.title}>NutriApp</Text>
+
+      <Text>Usuário</Text>
       <TextInput
-        placeholder="Usuário"
+        placeholder="Digite seu usuário..."
         style={styles.input}
         value={username}
         onChangeText={setUsername}
       />
+      <Text>Senha</Text>
       <TextInput
-        placeholder="Senha"
+        placeholder="Digite sua senha..."
         secureTextEntry
         style={styles.input}
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Entrar" onPress={handleLogin} />
+      <Button color="#316852" title="Entrar" onPress={handleLogin} />
       <Text style={styles.link} onPress={() => Alert.alert('Recuperar senha')}>
         Esqueceu sua senha?
       </Text>
@@ -74,6 +79,17 @@ const styles = StyleSheet.create({
     color: 'blue',
     textAlign: 'center',
   },
+  image: {
+    width: 400,
+    height: 400
+  },
+  title: {
+    color: '#A92C3A',
+    fontSize: 32,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginBottom: 30,
+  }
 });
 
 export default LoginScreen;

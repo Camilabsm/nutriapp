@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const ScheduleView: React.FC = () => {
+const MetricsView: React.FC = () => {
   return (
     <View>
       <Text>Home Screen</Text>
@@ -10,4 +10,4 @@ const ScheduleView: React.FC = () => {
   );
 };
 
-export default ScheduleView;
+export default MetricsView;

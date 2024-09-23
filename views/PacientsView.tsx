@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Button, Modal, TextInput, Alert, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { getPatientsByUser, addPatient } from '../utils/Database';
 
 // Defina o tipo de parâmetros do stack navigator
 type RootStackParamList = {
@@ -19,45 +18,14 @@ const PacientsView: React.FC<Props> = ({ route }) => {
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-  const { userId } = route.params; // Pega o userId dos parâmetros da rota
 
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const patientsData = await getPatientsByUser(userId);
-        setPatients(patientsData);
-      } catch (error) {
-        Alert.alert('Erro', 'Erro ao buscar pacientes');
-      }
-    };
-
-    fetchPatients();
-  }, []);
-
-  const handleAddPatient = async () => {
-    if (!name || !age || !weight || !height) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos');
-      return;
-    }
-
-    try {
-      await addPatient(userId, name, parseInt(age), parseFloat(weight), parseFloat(height));
-      setModalVisible(false); // Fechar o modal
-      setName('');
-      setAge('');
-      setWeight('');
-      setHeight('');
-      Alert.alert('Sucesso', 'Paciente adicionado com sucesso!');
-      const patientsData = await getPatientsByUser(userId); // Atualiza a lista de pacientes
-      setPatients(patientsData);
-    } catch (error) {
-      Alert.alert('Erro', 'Erro ao adicionar paciente');
-    }
-  };
+  async function handleAddPatient() {
+    console.log('oie')
+  }
 
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={patients}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
@@ -68,9 +36,8 @@ const PacientsView: React.FC<Props> = ({ route }) => {
             <Text>Altura: {item.height} m</Text>
           </View>
         )}
-      />
+      /> */}
 
-      {/* Botão para abrir o modal */}
       <Button title="Adicionar Paciente" onPress={() => setModalVisible(true)} />
 
       {/* Modal para adicionar paciente */}
