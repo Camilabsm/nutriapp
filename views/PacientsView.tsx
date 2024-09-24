@@ -1,4 +1,3 @@
-// src/screens/PatientsScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Button, Modal, TextInput, Alert, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -119,7 +118,7 @@ const PacientsView: React.FC<Props> = ({ route }) => {
         <Picker.Item label="Trimestral" value="trimestral" />
         <Picker.Item label="Semestral" value="semestral" />
       </Picker>
-      <Text style={styles.label}>Data inicial do plano: {date.toLocaleDateString()}</Text>
+      <Text style={styles.label}>Data inicial do plano:</Text>
       <Button title="Selecionar Data" color='green' onPress={showDatePicker} />
 
       {show && (
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   label: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
     borderColor: '#ddd',
   },

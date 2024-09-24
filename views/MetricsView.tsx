@@ -4,7 +4,7 @@ import { BarChart } from 'react-native-chart-kit';
 
 const screenWidth = Dimensions.get('window').width;
 
-const MetricsView = () => {
+const MetricsView: React.FC = () => {
   const [totalPacientes, setTotalPacientes] = useState<number | null>(null);
   const [pacientesPorPlano, setPacientesPorPlano] = useState<Array<{ plano: string, quantidade: number }> | null>(null);
   const [loading, setLoading] = useState(true);

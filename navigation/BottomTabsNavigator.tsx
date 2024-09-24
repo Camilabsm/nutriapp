@@ -1,4 +1,3 @@
-// src/navigation/BottomTabsNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomepageView from '../views/HomepageView';
@@ -31,8 +30,7 @@ const BottomTabsNavigator: React.FC = () => {
         } else if (route.name === 'Logout') {
           iconName = 'exit-outline';
         }
-
-        // Retorna o ícone apropriado para cada aba
+        
         return <Ionicons name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: '#316852',

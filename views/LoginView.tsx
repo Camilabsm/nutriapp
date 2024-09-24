@@ -1,4 +1,3 @@
-// src/screens/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -19,6 +18,8 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       try {
         const isAuthenticated = userDatabase.getUser(username, password)
         if (isAuthenticated) {
+          setPassword('')
+          setUsername('')
           AsyncStorage.setItem('userToken', '123')
           navigation.navigate('Main')
         } else {
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
+    alignSelf: 'center',
     width: 400,
     height: 400
   },

@@ -1,4 +1,3 @@
-// src/navigation/AppNavigator.tsx
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthStackNavigator from './AuthStackNavigator';
