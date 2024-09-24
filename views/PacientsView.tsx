@@ -2,45 +2,98 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Button, Modal, TextInput, Alert, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-// Defina o tipo de parâmetros do stack navigator
 type RootStackParamList = {
   Patients: { userId: number }; // A rota Patients recebe userId como parâmetro
 };
 
-// Defina o tipo de props da PatientsScreen usando StackScreenProps
 type Props = StackScreenProps<RootStackParamList, 'Patients'>;
 
 const PacientsView: React.FC<Props> = ({ route }) => {
-  const [patients, setPatients] = useState<any[]>([]);
-  const [modalVisible, setModalVisible] = useState(false); // Estado do modal
+  const [patients, setPatients] = useState<any[]>([{id: 1, name: "Paciente 1", plan: "Semestral", initialDate: "2024-01-01"}, {id: 2, name: "Paciente 2", plan: "Trimestral", initialDate: "2024-08-01"}, {id: 3, name: "Paciente 3", plan: "Mensal", initialDate: "2024-09-10"}, {id: 4, name: "Paciente 4", plan: "Trimestral", initialDate: "2024-07-10"}, {id: 5, name: "Paciente 5", plan: "Semestral", initialDate: "2024-09-23"}]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
+  const [plan, setPlan] = useState('');
 
   async function handleAddPatient() {
-    console.log('oie')
+    Alert.alert('Sucesso!', 'Um novo paciente foi adicionado')
+    setModalVisible(false)
   }
+
+    const [date, setDate] = useState(new Date()); 
+    const [show, setShow] = useState(false); 
+  
+
+    const onChange = (event: any, selectedDate?: Date) => {
+      const currentDate = selectedDate || date; 
+      setShow(false); 
+      setDate(currentDate); 
+    };
+    
+    const showDatePicker = () => {
+      setShow(true)
+    };
+
+    const planSituation = (initialDate:string, plan: string) => {
+      const remainingDays = Math.round((Date.now() - Date.parse(initialDate))/86400000)
+      let situation = ''
+      switch(plan) {
+        case "Mensal": 
+          if (30 > remainingDays && remainingDays >= 14) {
+            situation = "Situação OK."
+          } else if (remainingDays < 14 && remainingDays >= 7) {
+            situation =  "Plano próximo ao vencimento."
+          } else if (remainingDays < 7 && remainingDays > 0) {
+            situation = "Ação necessária! Última semana de plano."
+          } else { 
+            situation = "Plano vencido."
+          } 
+        break;
+        case "Trimestral": 
+        if (90 > remainingDays && remainingDays >= 14) {
+            situation = "Situação OK."
+          } else if (remainingDays < 14 && remainingDays >= 7) {
+            situation = "Plano próximo ao vencimento."
+          } else if (remainingDays < 7 && remainingDays > 0) {
+            situation = "Ação necessária! Última semana de plano."
+          } else { 
+            situation = "Plano vencido."
+          } 
+        break;
+        case "Semestral":
+          if (180 > remainingDays && remainingDays >= 14) {
+            situation = "Situação OK."
+          } else if (remainingDays < 14 && remainingDays >= 7) {
+            situation = "Plano próximo ao vencimento."
+          } else if (remainingDays < 7 && remainingDays > 0) {
+            situation = "Ação necessária! Última semana de plano."
+          } else { 
+            situation = "Plano vencido."
+          } 
+        break;
+      }
+      return situation;
+    }
 
   return (
     <View style={styles.container}>
-      {/* <FlatList
+      <FlatList
         data={patients}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.patientContainer}>
             <Text>Nome: {item.name}</Text>
-            <Text>Idade: {item.age}</Text>
-            <Text>Peso: {item.weight} kg</Text>
-            <Text>Altura: {item.height} m</Text>
+            <Text>Tipo do plano: {item.plan}</Text>
+            <Text>Data de início do plano: {item.initialDate} </Text>
+            <Text>Situação: {planSituation(item.initialDate, item.plan)}</Text>
           </View>
         )}
-      /> */}
+      />
 
-      <Button title="Adicionar Paciente" onPress={() => setModalVisible(true)} />
+      <Button title="Adicionar novo paciente" onPress={() => setModalVisible(true)} />
 
-      {/* Modal para adicionar paciente */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -56,27 +109,27 @@ const PacientsView: React.FC<Props> = ({ route }) => {
               onChangeText={setName}
               style={styles.input}
             />
-            <TextInput
-              placeholder="Idade"
-              value={age}
-              onChangeText={setAge}
-              keyboardType="numeric"
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Peso"
-              value={weight}
-              onChangeText={setWeight}
-              keyboardType="numeric"
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Altura"
-              value={height}
-              onChangeText={setHeight}
-              keyboardType="numeric"
-              style={styles.input}
-            />
+            <Picker
+        selectedValue={plan}
+        style={styles.picker}
+        onValueChange={(itemValue, itemIndex) => setPlan(itemValue)}
+      >
+        <Picker.Item label="Selecione um plano" value="" />
+        <Picker.Item label="Mensal" value="mensal" />
+        <Picker.Item label="Trimestral" value="trimestral" />
+        <Picker.Item label="Semestral" value="semestral" />
+      </Picker>
+      <Text style={styles.label}>Data inicial do plano: {date.toLocaleDateString()}</Text>
+      <Button title="Selecionar Data" color='green' onPress={showDatePicker} />
+
+      {show && (
+        <DateTimePicker
+          value={date} 
+          mode="date" 
+          display="default" 
+          onChange={onChange}
+        />
+      )}
             <Button title="Adicionar" onPress={handleAddPatient} />
             <Button title="Cancelar" color="red" onPress={() => setModalVisible(false)} />
           </View>
@@ -124,6 +177,23 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 5,
     marginBottom: 10,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 20,
+    borderColor: '#ddd',
+  },
+  selectedValue: {
+    fontSize: 16,
+    marginTop: 20,
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
+    borderColor: '#ddd',
   },
 });
 
