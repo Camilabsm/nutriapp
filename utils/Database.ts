@@ -1,21 +1,24 @@
-import { type SQLiteDatabase } from 'expo-sqlite';
-import { Alert } from 'react-native';
+import * as SQLite from 'expo-sqlite';
 
-const database_name = 'NutriApp.db';
-const database_location = 'default';
-const database_version = '1.0';
-const database_displayname = 'NutriApp Database';
-const database_size = 200000;
+const database_name = 'nutriapp.db';
 
-export async function initializeDatabase(database: SQLiteDatabase) {
-  await database.execAsync(`
+export async function initializeDatabase() {
+  const db = await SQLite.openDatabaseAsync(database_name);
+
+  await db.execAsync(`
     CREATE TABLE IF NOT EXISTS usuarios (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
       email TEXT NOT NULL,
       usuario TEXT NOT NULL, 
       senha TEXT
-    );  
+    );
+    CREATE TABLE IF NOT EXISTS pacientes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      plano TEXT NOT NULL,
+      data_inicial TEXT NOT NULL, 
+    ); 
   `)
 }
  

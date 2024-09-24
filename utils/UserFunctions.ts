@@ -1,15 +1,12 @@
-import { useSQLiteContext } from "expo-sqlite"
+import * as SQLite from 'expo-sqlite';
 
 export function useUserDatabase() {
-    const database = useSQLiteContext()
-    async function createUser() {
-
-    }
+    const db = SQLite.useSQLiteContext()
 
     async function getUser(username: string, password: string) {
         try {
             const query = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?"
-            const result = await database.getFirstAsync(query, username, password)
+            const result = await db.getFirstAsync(query, username, password)
             if (result) {
                 return true
             } else {
@@ -20,5 +17,5 @@ export function useUserDatabase() {
         }
     }
 
-    return { createUser, getUser }
+    return { getUser }
 }
