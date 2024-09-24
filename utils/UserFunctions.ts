@@ -5,8 +5,8 @@ export function useUserDatabase() {
 
     async function getUser(username: string, password: string) {
         try {
-            const query = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?"
-            const result = await db.getFirstAsync(query, username, password)
+            const query = `SELECT * FROM usuarios WHERE usuario = ${username} AND senha = ${password}`
+            const result = await db.getFirstAsync(query)
             if (result) {
                 return true
             } else {

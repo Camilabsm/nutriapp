@@ -10,7 +10,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 const App: React.FC = () => {
 
   return (
-    <SQLiteProvider databaseName='nutriapp.db' onInit={initializeDatabase}>
+    <SQLiteProvider databaseName='nutriapp.db'>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>

@@ -28,6 +28,8 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       } catch (error) {
         Alert.alert('Erro', 'Erro na autenticação')
       }
+    } else {
+      Alert.alert('Erro', 'Você precisa preencher todos os campos!')
     }
   }
 
